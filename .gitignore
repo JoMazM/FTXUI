@@ -17,6 +17,11 @@
 !ftxui.pc.in
 !iwyu.imp
 
+
+# zig build system
+!build.zig
+!build.zig.zon
+
 # .github directory:
 !.github/**/*.yaml
 !.github/**/*.yml

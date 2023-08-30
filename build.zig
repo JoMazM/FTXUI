@@ -1,5 +1,7 @@
 const std = @import("std");
 
+const Path = std.Build.LazyPath;
+
 pub fn build(b: *std.build.Builder) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -9,10 +11,8 @@ pub fn build(b: *std.build.Builder) void {
         .target = target,
         .optimize = optimize,
     });
-    screen.addIncludePath(std.Build.LazyPath{ .path = "include" });
-    screen.addIncludePath(std.Build.LazyPath{ .path = "src" });
-    // screen.addIncludePath(std.Build.LazyPath{ .path = "include/ftxui/screen" });
-    // screen.addIncludePath(std.Build.LazyPath{ .path = "src/ftxui/screen" });
+    screen.addIncludePath(Path{ .path = "include" });
+    screen.addIncludePath(Path{ .path = "src" });
     screen.linkLibCpp();
     screen.addCSourceFiles(&.{
         "src/ftxui/screen/box.cpp",
@@ -29,6 +29,16 @@ pub fn build(b: *std.build.Builder) void {
         "-fno-exceptions",
         "-DFTXUI_BUILD_TESTS=OFF",
     });
+    screen.installHeadersDirectoryOptions(.{
+        .source_dir = Path.relative("include"),
+        .install_dir = .header,
+        .install_subdir = "",
+        .exclude_extensions = &.{
+            "am",
+            "gitignore",
+        },
+    });
+
     b.installArtifact(screen);
 
     const dom = b.addStaticLibrary(.{
