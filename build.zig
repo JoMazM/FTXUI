@@ -30,7 +30,7 @@ pub fn build(b: *std.build.Builder) void {
         "-DFTXUI_BUILD_TESTS=OFF",
     });
     screen.installHeadersDirectoryOptions(.{
-        .source_dir = Path.relative("include"),
+        .source_dir = Path{ .path = "include" },
         .install_dir = .header,
         .install_subdir = "",
         .exclude_extensions = &.{
@@ -46,8 +46,8 @@ pub fn build(b: *std.build.Builder) void {
         .target = target,
         .optimize = optimize,
     });
-    dom.addIncludePath(std.Build.LazyPath{ .path = "include" });
-    dom.addIncludePath(std.Build.LazyPath{ .path = "src" });
+    dom.addIncludePath(Path{ .path = "include" });
+    dom.addIncludePath(Path{ .path = "src" });
     dom.linkLibCpp();
     dom.addCSourceFiles(&.{
         "src/ftxui/dom/automerge.cpp",
@@ -95,6 +95,15 @@ pub fn build(b: *std.build.Builder) void {
         "-fno-exceptions",
     });
     dom.linkLibrary(screen);
+    dom.installHeadersDirectoryOptions(.{
+        .source_dir = Path{ .path = "include" },
+        .install_dir = .header,
+        .install_subdir = "",
+        .exclude_extensions = &.{
+            "am",
+            "gitignore",
+        },
+    });
     b.installArtifact(dom);
 
     const component = b.addStaticLibrary(.{
@@ -102,8 +111,8 @@ pub fn build(b: *std.build.Builder) void {
         .target = target,
         .optimize = optimize,
     });
-    component.addIncludePath(std.Build.LazyPath{ .path = "include" });
-    component.addIncludePath(std.Build.LazyPath{ .path = "src" });
+    component.addIncludePath(Path{ .path = "include" });
+    component.addIncludePath(Path{ .path = "src" });
     component.linkLibCpp();
     component.addCSourceFiles(&.{
         "src/ftxui/component/animation.cpp",
@@ -133,5 +142,14 @@ pub fn build(b: *std.build.Builder) void {
         "src/ftxui/component/window.cpp",
     }, &.{ "-std=c++17", "-fno-rtti", "-fno-exceptions", "-DUNICODE" });
     component.linkLibrary(dom);
+    component.installHeadersDirectoryOptions(.{
+        .source_dir = Path{ .path = "include" },
+        .install_dir = .header,
+        .install_subdir = "",
+        .exclude_extensions = &.{
+            "am",
+            "gitignore",
+        },
+    });
     b.installArtifact(component);
 }
