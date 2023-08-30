@@ -24,6 +24,10 @@
 
 </p>
 
+# ZIG
+This fork uses zig as build system. To build, run for example:
+zig build -Dtarget=aarch64-linux-gnu
+
 # FTXUI
 
 <i>Functional Terminal (X) User interface</i>
