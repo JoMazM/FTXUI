@@ -14,20 +14,23 @@ pub fn build(b: *std.build.Builder) void {
     screen.addIncludePath(Path{ .path = "include" });
     screen.addIncludePath(Path{ .path = "src" });
     screen.linkLibCpp();
-    screen.addCSourceFiles(&.{
-        "src/ftxui/screen/box.cpp",
-        "src/ftxui/screen/color_info.cpp",
-        //"src/ftxui/screen/color_test.cpp",
-        "src/ftxui/screen/color.cpp",
-        "src/ftxui/screen/screen.cpp",
-        //"src/ftxui/screen/string_test.cpp",
-        "src/ftxui/screen/string.cpp",
-        "src/ftxui/screen/terminal.cpp",
-    }, &.{
-        "-std=c++17",
-        "-fno-rtti",
-        "-fno-exceptions",
-        "-DFTXUI_BUILD_TESTS=OFF",
+    screen.addCSourceFiles(.{
+        .files = &.{
+            "src/ftxui/screen/box.cpp",
+            "src/ftxui/screen/color_info.cpp",
+            //"src/ftxui/screen/color_test.cpp",
+            "src/ftxui/screen/color.cpp",
+            "src/ftxui/screen/screen.cpp",
+            //"src/ftxui/screen/string_test.cpp",
+            "src/ftxui/screen/string.cpp",
+            "src/ftxui/screen/terminal.cpp",
+        },
+        .flags = &.{
+            "-std=c++17",
+            "-fno-rtti",
+            "-fno-exceptions",
+            "-DFTXUI_BUILD_TESTS=OFF",
+        },
     });
     screen.installHeadersDirectoryOptions(.{
         .source_dir = Path{ .path = "include" },
@@ -49,7 +52,7 @@ pub fn build(b: *std.build.Builder) void {
     dom.addIncludePath(Path{ .path = "include" });
     dom.addIncludePath(Path{ .path = "src" });
     dom.linkLibCpp();
-    dom.addCSourceFiles(&.{
+    dom.addCSourceFiles(.{ .files = &.{
         "src/ftxui/dom/automerge.cpp",
         "src/ftxui/dom/blink.cpp",
         "src/ftxui/dom/bold.cpp",
@@ -89,11 +92,11 @@ pub fn build(b: *std.build.Builder) void {
         "src/ftxui/dom/underlined_double.cpp",
         "src/ftxui/dom/util.cpp",
         "src/ftxui/dom/vbox.cpp",
-    }, &.{
+    }, .flags = &.{
         "-std=c++17",
         "-fno-rtti",
         "-fno-exceptions",
-    });
+    } });
     dom.linkLibrary(screen);
     dom.installHeadersDirectoryOptions(.{
         .source_dir = Path{ .path = "include" },
@@ -114,7 +117,7 @@ pub fn build(b: *std.build.Builder) void {
     component.addIncludePath(Path{ .path = "include" });
     component.addIncludePath(Path{ .path = "src" });
     component.linkLibCpp();
-    component.addCSourceFiles(&.{
+    component.addCSourceFiles(.{ .files = &.{
         "src/ftxui/component/animation.cpp",
         "src/ftxui/component/button.cpp",
         "src/ftxui/component/catch_event.cpp",
@@ -140,7 +143,7 @@ pub fn build(b: *std.build.Builder) void {
         "src/ftxui/component/terminal_input_parser.cpp",
         "src/ftxui/component/util.cpp",
         "src/ftxui/component/window.cpp",
-    }, &.{ "-std=c++17", "-fno-rtti", "-fno-exceptions", "-DUNICODE" });
+    }, .flags = &.{ "-std=c++17", "-fno-rtti", "-fno-exceptions", "-DUNICODE" } });
     component.linkLibrary(dom);
     component.installHeadersDirectoryOptions(.{
         .source_dir = Path{ .path = "include" },
