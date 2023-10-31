@@ -298,6 +298,8 @@ Prebuilt components are declared in [<ftxui/component/component.hpp>](https://ar
 
 ## Libraries for FTXUI
 - *Want to share a useful component using FTXUI? Feel free adding yours here*
+- [ftxui-grid-container](https://github.com/mingsheng13/grid-container-ftxui)
+- [ftxui-ip-input](https://github.com/mingsheng13/ip-input-ftxui)
 
 
 ## Project using FTXUI
@@ -327,6 +329,9 @@ Feel free to add your projects here:
 - [eCAL monitor](https://github.com/eclipse-ecal/ecal)
 - [Path Finder](https://github.com/Ruebled/Path_Finder)
 - [rw-tui](https://github.com/LeeKyuHyuk/rw-tui)
+- [resource-monitor](https://github.com/catalincd/resource-monitor)
+- [ftxuiFileReader](https://github.com/J0sephDavis/ftxuiFileReader)
+- [ftxui_CPUMeter](https://github.com/tzzzzzzzx/ftxui_CPUMeter)
 
 ### [cpp-best-practices/game_jam](https://github.com/cpp-best-practices/game_jam)
 
@@ -352,7 +357,7 @@ include(FetchContent)
 
 FetchContent_Declare(ftxui
   GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
-  GIT_TAG v3.0.0
+  GIT_TAG v5.0.0
 )
 
 FetchContent_GetProperties(ftxui)
