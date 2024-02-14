@@ -150,10 +150,15 @@ void TerminalInputParser::Send(TerminalInputParser::Output output) {
       pending_.clear();
       return;
 
-    case CURSOR_REPORTING:
-      out_->Send(Event::CursorReporting(std::move(pending_),  // NOLINT
-                                        output.cursor.x,      // NOLINT
-                                        output.cursor.y));    // NOLINT
+    case CURSOR_POSITION:
+      out_->Send(Event::CursorPosition(std::move(pending_),  // NOLINT
+                                       output.cursor.x,      // NOLINT
+                                       output.cursor.y));    // NOLINT
+      pending_.clear();
+      return;
+
+    case CURSOR_SHAPE:
+      out_->Send(Event::CursorShape(std::move(pending_), output.cursor_shape));
       pending_.clear();
       return;
   }
@@ -286,6 +291,7 @@ TerminalInputParser::Output TerminalInputParser::ParseESC() {
   }
 }
 
+// ESC P ... ESC BACKSLASH
 TerminalInputParser::Output TerminalInputParser::ParseDCS() {
   // Parse until the string terminator ST.
   while (true) {
@@ -303,6 +309,16 @@ TerminalInputParser::Output TerminalInputParser::ParseDCS() {
 
     if (Current() != '\\') {
       continue;
+    }
+
+    if (pending_.size() == 10 &&  //
+        pending_[2] == '1' &&     //
+        pending_[3] == '$' &&     //
+        pending_[4] == 'r' &&     //
+        true) {
+      Output output(CURSOR_SHAPE);
+      output.cursor_shape = pending_[5] - '0';
+      return output;
     }
 
     return SPECIAL;
@@ -351,7 +367,7 @@ TerminalInputParser::Output TerminalInputParser::ParseCSI() {
         case 'm':
           return ParseMouse(altered, false, std::move(arguments));
         case 'R':
-          return ParseCursorReporting(std::move(arguments));
+          return ParseCursorPosition(std::move(arguments));
         default:
           return SPECIAL;
       }
@@ -394,23 +410,46 @@ TerminalInputParser::Output TerminalInputParser::ParseMouse(  // NOLINT
   (void)altered;
 
   Output output(MOUSE);
-  output.mouse.button = Mouse::Button((arguments[0] & 3) +          // NOLINT
-                                      ((arguments[0] & 64) >> 4));  // NOLINT
-  output.mouse.motion = Mouse::Motion(pressed);                     // NOLINT
-  output.mouse.shift = bool(arguments[0] & 4);                      // NOLINT
-  output.mouse.meta = bool(arguments[0] & 8);                       // NOLINT
-  output.mouse.x = arguments[1];                                    // NOLINT
-  output.mouse.y = arguments[2];                                    // NOLINT
+  output.mouse.motion = Mouse::Motion(pressed);  // NOLINT
+
+  // Bits value Modifer  Comment
+  // ---- ----- ------- ---------
+  // 0 1  1 2   button   0 = Left, 1 = Middle, 2 = Right, 3 = Release
+  // 2    4     Shift
+  // 3    8     Meta
+  // 4    16    Control
+  // 5    32    Move
+  // 6    64    Wheel
+
+  // clang-format off
+  const int button      = arguments[0] & (1 + 2); // NOLINT
+  const bool is_shift   = arguments[0] & 4;       // NOLINT
+  const bool is_meta    = arguments[0] & 8;       // NOLINT
+  const bool is_control = arguments[0] & 16;      // NOLINT
+  const bool is_move    = arguments[0] & 32;      // NOLINT
+  const bool is_wheel   = arguments[0] & 64;      // NOLINT
+  // clang-format on
+
+  output.mouse.motion = is_move ? Mouse::Moved : Mouse::Motion(pressed);
+  output.mouse.button = is_wheel ? Mouse::Button(Mouse::WheelUp + button)  //
+                                 : Mouse::Button(button);
+  output.mouse.shift = is_shift;
+  output.mouse.meta = is_meta;
+  output.mouse.control = is_control;
+  output.mouse.x = arguments[1];  // NOLINT
+  output.mouse.y = arguments[2];  // NOLINT
+
+  // Motion event.
   return output;
 }
 
 // NOLINTNEXTLINE
-TerminalInputParser::Output TerminalInputParser::ParseCursorReporting(
+TerminalInputParser::Output TerminalInputParser::ParseCursorPosition(
     std::vector<int> arguments) {
   if (arguments.size() != 2) {
     return SPECIAL;
   }
-  Output output(CURSOR_REPORTING);
+  Output output(CURSOR_POSITION);
   output.cursor.y = arguments[0];  // NOLINT
   output.cursor.x = arguments[1];  // NOLINT
   return output;

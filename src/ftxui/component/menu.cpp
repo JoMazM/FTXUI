@@ -318,8 +318,9 @@ class MenuBase : public ComponentBase, public MenuOption {
 
       TakeFocus();
       focused_entry() = i;
+
       if (event.mouse().button == Mouse::Left &&
-          event.mouse().motion == Mouse::Released) {
+          event.mouse().motion == Mouse::Pressed) {
         if (selected() != i) {
           selected() = i;
           selected_previous_ = selected();
@@ -684,7 +685,7 @@ Component MenuEntry(MenuEntryOption option) {
       }
 
       if (event.mouse().button == Mouse::Left &&
-          event.mouse().motion == Mouse::Released) {
+          event.mouse().motion == Mouse::Pressed) {
         TakeFocus();
         return true;
       }

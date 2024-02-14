@@ -31,6 +31,8 @@ class ScreenInteractive : public Screen {
   // Constructors:
   static ScreenInteractive FixedSize(int dimx, int dimy);
   static ScreenInteractive Fullscreen();
+  static ScreenInteractive FullscreenPrimaryScreen();
+  static ScreenInteractive FullscreenAlternateScreen();
   static ScreenInteractive FitComponent();
   static ScreenInteractive TerminalOutput();
 
@@ -111,6 +113,9 @@ class ScreenInteractive : public Screen {
   bool previous_frame_resized_ = false;
 
   bool frame_valid_ = false;
+
+  // The style of the cursor to restore on exit.
+  int cursor_reset_shape_ = 1;
 
   friend class Loop;
 

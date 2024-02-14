@@ -124,7 +124,7 @@ class RadioboxBase : public ComponentBase, public RadioboxOption {
       TakeFocus();
       focused_entry() = i;
       if (event.mouse().button == Mouse::Left &&
-          event.mouse().motion == Mouse::Released) {
+          event.mouse().motion == Mouse::Pressed) {
         if (selected() != i) {
           selected() = i;
           on_change();

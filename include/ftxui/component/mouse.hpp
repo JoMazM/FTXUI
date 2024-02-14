@@ -21,6 +21,7 @@ struct Mouse {
   enum Motion {
     Released = 0,
     Pressed = 1,
+    Moved = 2,
   };
 
   // Button

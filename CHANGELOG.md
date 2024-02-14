@@ -7,6 +7,22 @@ current (development)
 ### Component
 - Feature: Add support for `Input`'s insert mode. Add `InputOption::insert`
   option. Added by @mingsheng13.
+- Bugfix/Breaking change: `Mouse transition`:
+  - Detect when the mouse move, as opposed to being pressed.
+    The Mouse::Moved motion was added.
+  - Dragging the mouse with the left button pressed now avoids activating
+    multiple checkboxes.
+  - A couple of components are now activated when the mouse is pressed,
+  as opposed to being released.
+  This fixes: https://github.com/ArthurSonzogni/FTXUI/issues/773
+  This fixes: https://github.com/ArthurSonzogni/FTXUI/issues/792
+- Bugfix: mouse.control is now reported correctly.
+- Feature: Add `ScreenInteractive::FullscreenPrimaryScreen()`. This allows
+  displaying a fullscreen component on the primary screen, as opposed to the
+  alternate screen.
+- Bugfix: `Input` `onchange` was not called on backspace or delete key.
+  Fixed by @chrysante in chrysante in PR #776.
+- Bugfix: Propertly restore cursor shape on exit. See #792.
 
 ### Dom
 - Feature: Add `hscroll_indicator`. It display an horizontal indicator

@@ -73,6 +73,7 @@ class CheckboxBase : public ComponentBase, public CheckboxOption {
         event.mouse().motion == Mouse::Pressed) {
       *checked = !*checked;
       on_change();
+      TakeFocus();
       return true;
     }
 
@@ -85,6 +86,32 @@ class CheckboxBase : public ComponentBase, public CheckboxOption {
   Box box_;
 };
 }  // namespace
+
+/// @brief Draw checkable element.
+/// @param option Additional optional parameters.
+/// @ingroup component
+/// @see CheckboxBase
+///
+/// ### Example
+///
+/// ```cpp
+/// auto screen = ScreenInteractive::FitComponent();
+/// CheckboxOption option;
+/// option.label = "Make a sandwidth";
+/// option.checked = false;
+/// Component checkbox = Checkbox(option);
+/// screen.Loop(checkbox)
+/// ```
+///
+/// ### Output
+///
+/// ```bash
+/// ☐ Make a sandwitch
+/// ```
+// NOLINTNEXTLINE
+Component Checkbox(CheckboxOption option) {
+  return Make<CheckboxBase>(std::move(option));
+}
 
 /// @brief Draw checkable element.
 /// @param label The label of the checkbox.
