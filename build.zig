@@ -2,7 +2,7 @@ const std = @import("std");
 
 const Path = std.Build.LazyPath;
 
-pub fn build(b: *std.build.Builder) void {
+pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
