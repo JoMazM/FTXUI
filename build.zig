@@ -35,9 +35,9 @@ pub fn build(b: *std.Build) void {
         },
     });
     screen.installHeadersDirectory(b.path("include"), "", .{
-        // .include_extensions = &.{
-        //     "zlib.h",
-        // },
+        .include_extensions = &.{
+            "*.hpp",
+        },
         .exclude_extensions = &.{
             "am",
             "gitignore",
@@ -101,9 +101,9 @@ pub fn build(b: *std.Build) void {
     } });
     dom.linkLibrary(screen);
     dom.installHeadersDirectory(b.path("include"), "", .{
-        // .include_extensions = &.{
-        //     "zlib.h",
-        // },
+        .include_extensions = &.{
+            "*.hpp",
+        },
         .exclude_extensions = &.{
             "am",
             "gitignore",
@@ -148,9 +148,9 @@ pub fn build(b: *std.Build) void {
     }, .flags = &.{ "-std=c++17", "-frtti", "-fexceptions", "-DUNICODE" } });
     component.linkLibrary(dom);
     component.installHeadersDirectory(b.path("include"), "", .{
-        // .include_extensions = &.{
-        //     "zlib.h",
-        // },
+        .include_extensions = &.{
+            "*.hpp",
+        },
         .exclude_extensions = &.{
             "am",
             "gitignore",
