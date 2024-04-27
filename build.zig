@@ -27,15 +27,17 @@ pub fn build(b: *std.Build) void {
         },
         .flags = &.{
             "-std=c++17",
-            "-fno-rtti",
-            "-fno-exceptions",
+            // "-fno-rtti",
+            "-frtti",
+            // "-fno-exceptions",
+            "-fexceptions",
             "-DFTXUI_BUILD_TESTS=OFF",
         },
     });
-    screen.installHeadersDirectoryOptions(.{
-        .source_dir = Path{ .path = "include" },
-        .install_dir = .header,
-        .install_subdir = "",
+    screen.installHeadersDirectory(b.path("include"), "", .{
+        // .include_extensions = &.{
+        //     "zlib.h",
+        // },
         .exclude_extensions = &.{
             "am",
             "gitignore",
@@ -94,14 +96,14 @@ pub fn build(b: *std.Build) void {
         "src/ftxui/dom/vbox.cpp",
     }, .flags = &.{
         "-std=c++17",
-        "-fno-rtti",
-        "-fno-exceptions",
+        "-frtti",
+        "-fexceptions",
     } });
     dom.linkLibrary(screen);
-    dom.installHeadersDirectoryOptions(.{
-        .source_dir = Path{ .path = "include" },
-        .install_dir = .header,
-        .install_subdir = "",
+    dom.installHeadersDirectory(b.path("include"), "", .{
+        // .include_extensions = &.{
+        //     "zlib.h",
+        // },
         .exclude_extensions = &.{
             "am",
             "gitignore",
@@ -143,12 +145,12 @@ pub fn build(b: *std.Build) void {
         "src/ftxui/component/terminal_input_parser.cpp",
         "src/ftxui/component/util.cpp",
         "src/ftxui/component/window.cpp",
-    }, .flags = &.{ "-std=c++17", "-fno-rtti", "-fno-exceptions", "-DUNICODE" } });
+    }, .flags = &.{ "-std=c++17", "-frtti", "-fexceptions", "-DUNICODE" } });
     component.linkLibrary(dom);
-    component.installHeadersDirectoryOptions(.{
-        .source_dir = Path{ .path = "include" },
-        .install_dir = .header,
-        .install_subdir = "",
+    component.installHeadersDirectory(b.path("include"), "", .{
+        // .include_extensions = &.{
+        //     "zlib.h",
+        // },
         .exclude_extensions = &.{
             "am",
             "gitignore",
