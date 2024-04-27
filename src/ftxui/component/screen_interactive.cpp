@@ -568,7 +568,15 @@ ScreenInteractive* ScreenInteractive::Active() {
 
 // private
 void ScreenInteractive::Install() {
+
   frame_valid_ = false;
+
+  // Flush the buffer for stdout to ensure whatever the user has printed before
+  // is fully applied before we start modifying the terminal configuration. This
+  // is important, because we are using two different channels (stdout vs
+  // termios/WinAPI) to communicate with the terminal emulator below. See
+  // https://github.com/ArthurSonzogni/FTXUI/issues/846
+  Flush();
 
   // After uninstalling the new configuration, flush it to the terminal to
   // ensure it is fully applied:
@@ -844,10 +852,18 @@ void ScreenInteractive::Draw(Component component) {
     const int dx = dimx_ - 1 - cursor_.x + int(dimx_ != terminal.dimx);
     const int dy = dimy_ - 1 - cursor_.y;
 
-    set_cursor_position = "\x1B[" + std::to_string(dy) + "A" +  //
-                          "\x1B[" + std::to_string(dx) + "D";
-    reset_cursor_position = "\x1B[" + std::to_string(dy) + "B" +  //
-                            "\x1B[" + std::to_string(dx) + "C";
+    set_cursor_position.clear();
+    reset_cursor_position.clear();
+
+    if (dy != 0) {
+      set_cursor_position += "\x1B[" + std::to_string(dy) + "A";
+      reset_cursor_position += "\x1B[" + std::to_string(dy) + "B";
+    }
+
+    if (dx != 0) {
+      set_cursor_position += "\x1B[" + std::to_string(dx) + "D";
+      reset_cursor_position += "\x1B[" + std::to_string(dx) + "C";
+    }
 
     if (cursor_.shape == Cursor::Hidden) {
       set_cursor_position += "\033[?25l";
@@ -891,7 +907,7 @@ void ScreenInteractive::ExitNow() {
 // private:
 void ScreenInteractive::Signal(int signal) {
   if (signal == SIGABRT) {
-    OnExit();
+    Exit();
     return;
   }
 
