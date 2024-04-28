@@ -19,6 +19,7 @@ pub fn build(b: *std.Build) void {
             "src/ftxui/screen/color_info.cpp",
             //"src/ftxui/screen/color_test.cpp",
             "src/ftxui/screen/color.cpp",
+            "src/ftxui/screen/image.cpp",
             "src/ftxui/screen/screen.cpp",
             //"src/ftxui/screen/string_test.cpp",
             "src/ftxui/screen/string.cpp",
