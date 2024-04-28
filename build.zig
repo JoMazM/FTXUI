@@ -13,7 +13,6 @@ pub fn build(b: *std.Build) void {
     });
     screen.addIncludePath(Path{ .path = "include" });
     screen.addIncludePath(Path{ .path = "src" });
-    screen.linkLibCpp();
     screen.addCSourceFiles(.{
         .files = &.{
             "src/ftxui/screen/box.cpp",
@@ -36,7 +35,7 @@ pub fn build(b: *std.Build) void {
     });
     screen.installHeadersDirectory(b.path("include"), "", .{
         .include_extensions = &.{
-            "*.hpp",
+            ".hpp",
         },
         .exclude_extensions = &.{
             "am",
@@ -44,6 +43,7 @@ pub fn build(b: *std.Build) void {
         },
     });
 
+    screen.linkLibCpp();
     b.installArtifact(screen);
 
     const dom = b.addStaticLibrary(.{
@@ -53,7 +53,6 @@ pub fn build(b: *std.Build) void {
     });
     dom.addIncludePath(Path{ .path = "include" });
     dom.addIncludePath(Path{ .path = "src" });
-    dom.linkLibCpp();
     dom.addCSourceFiles(.{ .files = &.{
         "src/ftxui/dom/automerge.cpp",
         "src/ftxui/dom/blink.cpp",
@@ -99,16 +98,17 @@ pub fn build(b: *std.Build) void {
         "-frtti",
         "-fexceptions",
     } });
-    dom.linkLibrary(screen);
     dom.installHeadersDirectory(b.path("include"), "", .{
         .include_extensions = &.{
-            "*.hpp",
+            ".hpp",
         },
         .exclude_extensions = &.{
             "am",
             "gitignore",
         },
     });
+    dom.linkLibCpp();
+    dom.linkLibrary(screen);
     b.installArtifact(dom);
 
     const component = b.addStaticLibrary(.{
@@ -118,7 +118,6 @@ pub fn build(b: *std.Build) void {
     });
     component.addIncludePath(Path{ .path = "include" });
     component.addIncludePath(Path{ .path = "src" });
-    component.linkLibCpp();
     component.addCSourceFiles(.{ .files = &.{
         "src/ftxui/component/animation.cpp",
         "src/ftxui/component/button.cpp",
@@ -146,15 +145,16 @@ pub fn build(b: *std.Build) void {
         "src/ftxui/component/util.cpp",
         "src/ftxui/component/window.cpp",
     }, .flags = &.{ "-std=c++17", "-frtti", "-fexceptions", "-DUNICODE" } });
-    component.linkLibrary(dom);
     component.installHeadersDirectory(b.path("include"), "", .{
         .include_extensions = &.{
-            "*.hpp",
+            ".hpp",
         },
         .exclude_extensions = &.{
             "am",
             "gitignore",
         },
     });
+    component.linkLibCpp();
+    component.linkLibrary(dom);
     b.installArtifact(component);
 }
