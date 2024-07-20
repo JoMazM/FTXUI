@@ -1,6 +1,8 @@
 // Copyright 2024 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
+#ifndef FTXUI_SCREEN_PIXEL_HPP
+#define FTXUI_SCREEN_PIXEL_HPP
 
 #include <cstdint>                 // for uint8_t
 #include <string>                  // for string, basic_string, allocator
@@ -38,7 +40,7 @@ struct Pixel {
 
   // The graphemes stored into the pixel. To support combining characters,
   // like: a?, this can potentially contain multiple codepoints.
-  std::string character = " ";
+  std::string character = "";
 
   // Colors:
   Color background_color = Color::Default;
@@ -46,3 +48,5 @@ struct Pixel {
 };
 
 }  // namespace ftxui
+
+#endif // FTXUI_SCREEN_PIXEL_HPP

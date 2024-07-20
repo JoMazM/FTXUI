@@ -5,11 +5,9 @@
 #define FTXUI_SCREEN_SCREEN_HPP
 
 #include <cstdint>  // for uint8_t
-#include <memory>
-#include <string>  // for string, basic_string, allocator
-#include <vector>  // for vector
+#include <string>   // for string, basic_string, allocator
+#include <vector>   // for vector
 
-#include "ftxui/screen/color.hpp"     // for Color, Color::Default
 #include "ftxui/screen/image.hpp"     // for Pixel, Image
 #include "ftxui/screen/terminal.hpp"  // for Dimensions
 
@@ -36,7 +34,8 @@ class Screen : public Image {
   // Print the Screen on to the terminal.
   void Print() const;
 
-  // Fill the screen with space and reset any screen state, like hyperlinks, and cursor
+  // Fill the screen with space and reset any screen state, like hyperlinks, and
+  // cursor
   void Clear();
 
   // Move the terminal cursor n-lines up with n = dimy().

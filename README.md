@@ -36,7 +36,7 @@ A simple cross-platform C++ library for terminal based user interfaces!
 
 ## Feature
  * Functional style. Inspired by
-   [[1]](https://hackernoon.com/building-reactive-terminal-interfaces-in-c-d392ce34e649?gi=d9fb9ce35901)
+   [1](https://hackernoon.com/building-reactive-terminal-interfaces-in-c-d392ce34e649?gi=d9fb9ce35901)
    and [React](https://reactjs.org/)
  * Simple and elegant syntax (in my opinion)
  * Keyboard & mouse navigation.
@@ -47,7 +47,7 @@ A simple cross-platform C++ library for terminal based user interfaces!
  * **Cross platform**: Linux/MacOS (main target), WebAssembly, Windows (Thanks to contributors!).
  * Learn by [examples](#documentation), and [tutorials](#documentation)
  * Multiple packages: CMake [FetchContent]([https://bewagner.net/programming/2020/05/02/cmake-fetchcontent/](https://cmake.org/cmake/help/latest/module/FetchContent.html)) (preferred), vcpkg, pkgbuild, conan.
- * Good practises: documentation, tests, fuzzers, performance tests, automated CI, automated packaging, etc...
+ * Good practices: documentation, tests, fuzzers, performance tests, automated CI, automated packaging, etc...
 
 ## Documentation
 
@@ -307,6 +307,7 @@ Prebuilt components are declared in [<ftxui/component/component.hpp>](https://ar
 Feel free to add your projects here:
 - [json-tui](https://github.com/ArthurSonzogni/json-tui)
 - [git-tui](https://github.com/ArthurSonzogni/git-tui)
+- [ostree-tui](https://github.com/AP-Sensing/ostree-tui)
 - [rgb-tui](https://github.com/ArthurSonzogni/rgb-tui)
 - [chrome-log-beautifier](https://github.com/ArthurSonzogni/chrome-log-beautifier)
 - [x86-64 CPU Architecture Simulation](https://github.com/AnisBdz/CPU)
@@ -334,6 +335,7 @@ Feel free to add your projects here:
 - [ftxui_CPUMeter](https://github.com/tzzzzzzzx/ftxui_CPUMeter)
 - [Captain's log](https://github.com/nikoladucak/caps-log)
 - [FTowerX](https://github.com/MhmRhm/FTowerX)
+- [Caravan](https://github.com/r3w0p/caravan)
 
 ### [cpp-best-practices/game_jam](https://github.com/cpp-best-practices/game_jam)
 

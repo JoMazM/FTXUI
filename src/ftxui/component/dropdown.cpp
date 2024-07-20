@@ -1,9 +1,9 @@
 // Copyright 2021 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <cstddef>     // for size_t
+#include <cstddef>  // for size_t
+#include <ftxui/component/event.hpp>
 #include <functional>  // for function
-#include <memory>      // for __shared_ptr_access, allocator, shared_ptr
 #include <string>      // for string
 
 #include "ftxui/component/component.hpp"  // for Maybe, Checkbox, Make, Radiobox, Vertical, Dropdown
@@ -32,7 +32,7 @@ Component Dropdown(ConstStringListRef entries, int* selected) {
 Component Dropdown(DropdownOption option) {
   class Impl : public ComponentBase, public DropdownOption {
    public:
-    Impl(DropdownOption option) : DropdownOption(std::move(option)) {
+    explicit Impl(DropdownOption option) : DropdownOption(std::move(option)) {
       FillDefault();
       checkbox_ = Checkbox(checkbox);
       radiobox_ = Radiobox(radiobox);
@@ -46,35 +46,46 @@ Component Dropdown(DropdownOption option) {
     Element Render() override {
       radiobox.selected =
           util::clamp(radiobox.selected(), 0, int(radiobox.entries.size()) - 1);
-      checkbox.label =
-          radiobox.entries[static_cast<size_t>(radiobox.selected())];
+      title_ = radiobox.entries[selected_()];
 
       return transform(*open_, checkbox_->Render(), radiobox_->Render());
     }
 
     // Switch focus in between the checkbox and the radiobox when selecting it.
     bool OnEvent(ftxui::Event event) override {
-      const bool show_old = open_();
+      const bool open_old = open_();
       const int selected_old = selected_();
-      const bool handled = ComponentBase::OnEvent(event);
+      bool handled = ComponentBase::OnEvent(event);
 
-      if (!show_old && open_()) {
+      // Transfer focus to the radiobox when the dropdown is opened.
+      if (!open_old && open_()) {
         radiobox_->TakeFocus();
       }
 
-      if (selected_old != selected_()) {
-        checkbox_->TakeFocus();
-        open_ = false;
+      // Auto-close the dropdown when the user selects an item, even if the item
+      // it the same as the previous one.
+      if (open_old && open_()) {
+        const bool should_close = (selected_() != selected_old) ||     //
+                                  (event == Event::Return) ||          //
+                                  (event == Event::Character(' ')) ||  //
+                                  (event == Event::Escape);            //
+
+        if (should_close) {
+          checkbox_->TakeFocus();
+          open_ = false;
+          handled = true;
+        }
       }
 
       return handled;
     }
 
     void FillDefault() {
-      open_ = std::move(checkbox.checked);
-      selected_ = std::move(radiobox.selected);
+      open_ = checkbox.checked;
+      selected_ = radiobox.selected;
       checkbox.checked = &*open_;
       radiobox.selected = &*selected_;
+      checkbox.label = &title_;
 
       if (!checkbox.transform) {
         checkbox.transform = [](const EntryState& s) {
@@ -96,14 +107,14 @@ Component Dropdown(DropdownOption option) {
           if (is_open) {
             const int max_height = 12;
             return vbox({
-                       checkbox_element,
+                       std::move(checkbox_element),
                        separator(),
-                       radiobox_element | vscroll_indicator | frame |
+                       std::move(radiobox_element) | vscroll_indicator | frame |
                            size(HEIGHT, LESS_THAN, max_height),
                    }) |
                    border;
           }
-          return vbox({checkbox_element, filler()}) | border;
+          return vbox({std::move(checkbox_element), filler()}) | border;
         };
       }
     }
@@ -113,6 +124,7 @@ Component Dropdown(DropdownOption option) {
     Ref<int> selected_;
     Component checkbox_;
     Component radiobox_;
+    std::string title_;
   };
 
   return Make<Impl>(option);

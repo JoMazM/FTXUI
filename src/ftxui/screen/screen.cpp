@@ -5,7 +5,6 @@
 #include <iostream>  // for operator<<, stringstream, basic_ostream, flush, cout, ostream
 #include <limits>
 #include <map>      // for _Rb_tree_const_iterator, map, operator!=, operator==
-#include <memory>   // for allocator, allocator_traits<>::value_type
 #include <sstream>  // IWYU pragma: keep
 #include <utility>  // for pair
 
@@ -391,9 +390,9 @@ Screen::Screen(int dimx, int dimy) : Image{dimx, dimy} {
 #if defined(_WIN32)
   // The placement of this call is a bit weird, however we can assume that
   // anybody who instantiates a Screen object eventually wants to output
-  // something to the console. If that is not the case, use an instance of Image instead.
-  // As we require UTF8 for all input/output operations we will just switch to
-  // UTF8 encoding here
+  // something to the console. If that is not the case, use an instance of Image
+  // instead. As we require UTF8 for all input/output operations we will just
+  // switch to UTF8 encoding here
   SetConsoleOutputCP(CP_UTF8);
   SetConsoleCP(CP_UTF8);
   WindowsEmulateVT100Terminal();
@@ -424,7 +423,11 @@ std::string Screen::ToString() const {
       if (!previous_fullwidth) {
         UpdatePixelStyle(this, ss, *previous_pixel_ref, pixel);
         previous_pixel_ref = &pixel;
-        ss << pixel.character;
+        if (pixel.character.empty()) {
+          ss << " ";
+        } else {
+          ss << pixel.character;
+        }
       }
       previous_fullwidth = (string_width(pixel.character) == 2);
     }
