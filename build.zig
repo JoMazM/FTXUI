@@ -11,8 +11,8 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    screen.addIncludePath(Path{ .path = "include" });
-    screen.addIncludePath(Path{ .path = "src" });
+    screen.addIncludePath(b.path("include"));
+    screen.addIncludePath(b.path("src"));
     screen.addCSourceFiles(.{
         .files = &.{
             "src/ftxui/screen/box.cpp",
@@ -52,8 +52,8 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    dom.addIncludePath(Path{ .path = "include" });
-    dom.addIncludePath(Path{ .path = "src" });
+    dom.addIncludePath(b.path("include"));
+    dom.addIncludePath(b.path("src"));
     dom.addCSourceFiles(.{ .files = &.{
         "src/ftxui/dom/automerge.cpp",
         "src/ftxui/dom/blink.cpp",
@@ -117,8 +117,8 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    component.addIncludePath(Path{ .path = "include" });
-    component.addIncludePath(Path{ .path = "src" });
+    component.addIncludePath(b.path("include"));
+    component.addIncludePath(b.path("src"));
     component.addCSourceFiles(.{ .files = &.{
         "src/ftxui/component/animation.cpp",
         "src/ftxui/component/button.cpp",
