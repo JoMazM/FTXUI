@@ -300,6 +300,7 @@ Prebuilt components are declared in [<ftxui/component/component.hpp>](https://ar
 - *Want to share a useful Component for FTXUI? Feel free to add yours here*
 - [ftxui-grid-container](https://github.com/mingsheng13/grid-container-ftxui)
 - [ftxui-ip-input](https://github.com/mingsheng13/ip-input-ftxui)
+- [ftxui-image-view](https://github.com/ljrrjl/ftxui-image-view.git): For Image Display.
 
 
 ## Project using FTXUI
@@ -313,7 +314,6 @@ Feel free to add your projects here:
 - [x86-64 CPU Architecture Simulation](https://github.com/AnisBdz/CPU)
 - [ltuiny](https://github.com/adrianoviana87/ltuiny)
 - [i3-termdialogs](https://github.com/mibli/i3-termdialogs)
-- [Just-Fast](https://github.com/GiuseppeCesarano/just-fast)
 - [simpPRU](https://github.com/VedantParanjape/simpPRU)
 - [Pigeon ROS TUI](https://github.com/PigeonSensei/Pigeon_ros_tui)
 - [hastur](https://github.com/robinlinden/hastur)
@@ -337,6 +337,14 @@ Feel free to add your projects here:
 - [FTowerX](https://github.com/MhmRhm/FTowerX)
 - [Caravan](https://github.com/r3w0p/caravan)
 - [Step-Writer](https://github.com/BrianAnakPintar/step-writer)
+- [XJ music](https://github.com/xjmusic/xjmusic)
+- [UDP chat](https://github.com/Sergeydigl3/udp-chat-tui)
+- [2048-cpp](https://github.com/Chessom/2048-cpp)
+- [Memory game](https://github.com/mikolajlubiak/memory)
+- [Terminal Animation](https://github.com/mikolajlubiak/terminal_animation)
+- [pciex](https://github.com/s0nx/pciex)
+- [Fallout terminal hacking](https://github.com/gshigin/yet-another-fallout-terminal-hacking-game)
+
 
 ### [cpp-best-practices/game_jam](https://github.com/cpp-best-practices/game_jam)
 

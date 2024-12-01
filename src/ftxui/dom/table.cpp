@@ -6,6 +6,7 @@
 #include <algorithm>  // for max
 #include <memory>   // for allocator, shared_ptr, allocator_traits<>::value_type
 #include <utility>  // for move, swap
+#include <vector>   // for vector
 
 #include "ftxui/dom/elements.hpp"  // for Element, operator|, text, separatorCharacter, Elements, BorderStyle, Decorator, emptyElement, size, gridbox, EQUAL, flex, flex_shrink, HEIGHT, WIDTH
 
@@ -68,6 +69,22 @@ Table::Table(std::vector<std::vector<std::string>> input) {
 /// @param input The input elements.
 /// @ingroup dom
 Table::Table(std::vector<std::vector<Element>> input) {
+  Initialize(std::move(input));
+}
+
+// @brief Create a table from a list of list of string.
+// @param init The input data.
+// @ingroup dom
+Table::Table(std::initializer_list<std::vector<std::string>> init) {
+  std::vector<std::vector<Element>> input;
+  for (const auto& row : init) {
+    std::vector<Element> output_row;
+    output_row.reserve(row.size());
+    for (const auto& cell : row) {
+      output_row.push_back(text(cell));
+    }
+    input.push_back(std::move(output_row));
+  }
   Initialize(std::move(input));
 }
 

@@ -8,12 +8,12 @@
 #include <optional>  // for optional, nullopt
 #include <string>    // for basic_string, string
 #include <utility>   // for move
-#include <vector>    // for __alloc_traits<>::value_type
 
 #include "ftxui/dom/elements.hpp"  // for unpack, Element, Decorator, BorderStyle, ROUNDED, borderStyled, Elements, DASHED, DOUBLE, EMPTY, HEAVY, LIGHT, border, borderDashed, borderDouble, borderEmpty, borderHeavy, borderLight, borderRounded, borderWith, window
 #include "ftxui/dom/node.hpp"      // for Node, Elements
 #include "ftxui/dom/requirement.hpp"  // for Requirement
 #include "ftxui/screen/box.hpp"       // for Box
+#include "ftxui/screen/pixel.hpp"     // for Pixel
 #include "ftxui/screen/screen.hpp"    // for Pixel, Screen
 
 namespace ftxui {
@@ -38,7 +38,8 @@ class Border : public Node {
          BorderStyle style,
          std::optional<Color> foreground_color = std::nullopt)
       : Node(std::move(children)),
-        charset_(simple_border_charset[style]),
+        charset_(simple_border_charset[style])  // NOLINT
+        ,
         foreground_color_(foreground_color) {}  // NOLINT
 
   const Charset& charset_;  // NOLINT
@@ -64,7 +65,7 @@ class Border : public Node {
     if (children_.size() == 2) {
       Box title_box;
       title_box.x_min = box.x_min + 1;
-      title_box.x_max = box.x_max - 1;
+      title_box.x_max = std::min(box.x_max - 1, box.x_min + children_[1]->requirement().min_x);
       title_box.y_min = box.y_min;
       title_box.y_max = box.y_min;
       children_[1]->SetBox(title_box);
@@ -266,7 +267,7 @@ Decorator borderStyled(BorderStyle style, Color foreground_color) {
   };
 }
 
-/// @brief Draw a light border around the element.
+/// @brief Draw a dashed border around the element.
 /// @ingroup dom
 /// @see border
 /// @see borderLight
@@ -301,7 +302,7 @@ Element borderDashed(Element child) {
   return std::make_shared<Border>(unpack(std::move(child)), DASHED);
 }
 
-/// @brief Draw a dashed border around the element.
+/// @brief Draw a light border around the element.
 /// @ingroup dom
 /// @see border
 /// @see borderLight

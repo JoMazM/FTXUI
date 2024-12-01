@@ -48,11 +48,8 @@ class ButtonBase : public ComponentBase, public ButtonOption {
     }
 
     auto focus_management = focused ? focus : active ? select : nothing;
-    const EntryState state = {
-        *label,
-        false,
-        active,
-        focused_or_hover,
+    const EntryState state{
+        *label, false, active, focused_or_hover, Index(),
     };
 
     auto element = (transform ? transform : DefaultTransform)  //
@@ -205,7 +202,7 @@ Component Button(ButtonOption option) {
 Component Button(ConstStringRef label,
                  std::function<void()> on_click,
                  ButtonOption option) {
-  option.label = label;
+  option.label = std::move(label);
   option.on_click = std::move(on_click);
   return Make<ButtonBase>(std::move(option));
 }

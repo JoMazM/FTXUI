@@ -40,10 +40,7 @@ class RadioboxBase : public ComponentBase, public RadioboxOption {
                               : is_menu_focused ? focus
                                                 : select;
       auto state = EntryState{
-          entries[i],
-          selected() == i,
-          is_selected,
-          is_focused,
+          entries[i], selected() == i, is_selected, is_focused, i,
       };
       auto element =
           (transform ? transform : RadioboxOption::Simple().transform)(state);
@@ -204,6 +201,7 @@ class RadioboxBase : public ComponentBase, public RadioboxOption {
 /// ○ entry 2
 /// ○ entry 3
 /// ```
+/// NOLINTNEXTLINE
 Component Radiobox(RadioboxOption option) {
   return Make<RadioboxBase>(std::move(option));
 }
@@ -239,7 +237,7 @@ Component Radiobox(RadioboxOption option) {
 Component Radiobox(ConstStringListRef entries,
                    int* selected,
                    RadioboxOption option) {
-  option.entries = entries;
+  option.entries = std::move(entries);
   option.selected = selected;
   return Make<RadioboxBase>(std::move(option));
 }

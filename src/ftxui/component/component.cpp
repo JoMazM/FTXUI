@@ -5,6 +5,7 @@
 #include <cassert>    // for assert
 #include <cstddef>    // for size_t
 #include <iterator>   // for begin, end
+#include <memory>     // for unique_ptr, make_unique
 #include <utility>    // for move
 #include <vector>     // for vector, __alloc_traits<>::value_type
 
@@ -48,6 +49,22 @@ Component& ComponentBase::ChildAt(size_t i) {
 /// @ingroup component
 size_t ComponentBase::ChildCount() const {
   return children_.size();
+}
+
+/// @brief Return index of the component in its parent. -1 if no parent.
+/// @ingroup component
+int ComponentBase::Index() const {
+  if (parent_ == nullptr) {
+    return -1;
+  }
+  int index = 0;
+  for (const Component& child : parent_->children_) {
+    if (child.get() == this) {
+      return index;
+    }
+    index++;
+  }
+  return -1;  // Not reached.
 }
 
 /// @brief Add a child.

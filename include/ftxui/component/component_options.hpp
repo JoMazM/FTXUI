@@ -25,6 +25,7 @@ struct EntryState {
   bool state;         ///< The state of the button/checkbox/radiobox
   bool active;        ///< Whether the entry is the active one.
   bool focused;       ///< Whether the entry is one focused by the user.
+  int index;          ///< Index of the entry when applicable or -1.
 };
 
 struct UnderlineOption {
@@ -227,6 +228,7 @@ struct SliderOption {
   Direction direction = Direction::Right;
   Color color_active = Color::White;
   Color color_inactive = Color::GrayDark;
+  std::function<void()> on_change;  ///> Called when `value` is updated.
 };
 
 // Parameter pack used by `WindowOptions::render`.
