@@ -81,7 +81,7 @@ include(FetchContent)
 set(FETCHCONTENT_UPDATES_DISCONNECTED TRUE)
 FetchContent_Declare(ftxui
   GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
-  GIT_TAG main # Important: Specify a version or a commit hash here.
+  GIT_TAG 6.1.9
 )
 FetchContent_MakeAvailable(ftxui)
 
@@ -94,13 +94,33 @@ target_link_libraries(ftxui-starter
 )
 ```
 
-## Build
+### Using Bazel {#build-bazel}
 
-```bash
-mkdir build && cd build
-cmake ..
-make
-./main
+See [ftxui module](https://registry.bazel.build/modules/ftxui) from the Bazel
+Central Registry.
+
+See also this [starter](https://github.com/ArthurSonzogni/ftxui-bazel) project.
+
+**Module.bazel**
+```starlark
+bazel_dep(
+    name = "ftxui",
+    version = "6.1.9",
+)
+```
+
+**BUILD.bazel**
+```starlark
+cc_binary(
+    name = "main",
+    srcs = ["main.cpp"],
+    deps = [
+        # Choose one of the following:
+        "@ftxui//:dom",
+        "@ftxui//:screen",
+        "@ftxui//:component",
+    ],
+)
 ```
 
 # List of modules. {#modules}
@@ -123,8 +143,8 @@ The project is comprised of 3 modules:
 
 This is the visual element of the program. It defines a `ftxui::Screen`, which
 is a grid of `ftxui::Pixel`. A Pixel represents a Unicode character and its
-associated style (bold, colors, etc.). The screen can be printed as a string
-using `ftxui::Screen::ToString()`. The following example highlights this
+associated style (bold, italic, colors, etc.). The screen can be printed as a
+string using `ftxui::Screen::ToString()`. The following example highlights this
 process:
 
 ```cpp
@@ -476,10 +496,11 @@ See [demo](https://arthursonzogni.github.io/FTXUI/examples/?file=component/linea
 
 ## Style {#dom-style}
 In addition to colored text and colored backgrounds. Many terminals support text
-effects such as: `bold`, `dim`, `underlined`, `inverted`, `blink`.
+effects such as: `bold`, `italic`, `dim`, `underlined`, `inverted`, `blink`.
 
 ```cpp
 Element bold(Element);
+Element italic(Element);
 Element dim(Element);
 Element inverted(Element);
 Element underlined(Element);

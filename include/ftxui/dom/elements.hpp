@@ -95,6 +95,7 @@ Element canvas(std::function<void(Canvas&)>);
 // -- Decorator ---
 Element bold(Element);
 Element dim(Element);
+Element italic(Element);
 Element inverted(Element);
 Element underlined(Element);
 Element underlinedDouble(Element);
@@ -161,7 +162,7 @@ Element frame(Element);
 Element xframe(Element);
 Element yframe(Element);
 Element focus(Element);
-Element select(Element);
+Element select(Element e);  // Deprecated - Alias for focus.
 
 // --- Cursor ---
 // Those are similar to `focus`, but also change the shape of the cursor.

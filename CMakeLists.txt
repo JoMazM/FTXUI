@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(ftxui
   LANGUAGES CXX
-  VERSION 5.0.0
+  VERSION 6.1.9
   DESCRIPTION "C++ Functional Terminal User Interface."
 )
 
@@ -84,6 +84,7 @@ add_library(dom
   src/ftxui/dom/hbox.cpp
   src/ftxui/dom/hyperlink.cpp
   src/ftxui/dom/inverted.cpp
+  src/ftxui/dom/italic.cpp
   src/ftxui/dom/linear_gradient.cpp
   src/ftxui/dom/node.cpp
   src/ftxui/dom/node_decorator.cpp

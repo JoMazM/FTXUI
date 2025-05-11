@@ -1,11 +1,13 @@
-#include <iostream>
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
 #include <ftxui/screen/box.hpp>  // for Box
-#include <utility>               // for move
+#include <string>
+#include <utility>  // for move
 
+#include <cstddef>
 #include "ftxui/dom/node.hpp"
+#include "ftxui/dom/selection.hpp"  // for Selection
 #include "ftxui/screen/screen.hpp"  // for Screen
 
 namespace ftxui {
@@ -17,8 +19,22 @@ Node::~Node() = default;
 /// @brief Compute how much space an elements needs.
 /// @ingroup dom
 void Node::ComputeRequirement() {
+  if (children_.empty()) {
+    return;
+  }
   for (auto& child : children_) {
     child->ComputeRequirement();
+  }
+
+  // By default, the requirement is the one of the first child.
+  requirement_ = children_[0]->requirement();
+
+  // Propagate the focused requirement.
+  for (size_t i = 1; i < children_.size(); ++i) {
+    if (!requirement_.focused.enabled &&
+        children_[i]->requirement().focused.enabled) {
+      requirement_.focused = children_[i]->requirement().focused;
+    }
   }
 }
 
@@ -107,6 +123,42 @@ void Render(Screen& screen, Node* node, Selection& selection) {
   // Step 3: Selection
   if (!selection.IsEmpty()) {
     node->Select(selection);
+  }
+
+  if (node->requirement().focused.enabled
+#if defined(FTXUI_MICROSOFT_TERMINAL_FALLBACK)
+      // Setting the cursor to the right position allow folks using CJK (China,
+      // Japanese, Korean, ...) characters to see their [input method editor]
+      // displayed at the right location. See [issue].
+      //
+      // [input method editor]:
+      // https://en.wikipedia.org/wiki/Input_method
+      //
+      // [issue]:
+      // https://github.com/ArthurSonzogni/FTXUI/issues/2#issuecomment-505282355
+      //
+      // Unfortunately, Microsoft terminal do not handle properly hiding the
+      // cursor. Instead the character under the cursor is hidden, which is a
+      // big problem. As a result, we can't enable setting cursor to the right
+      // location. It will be displayed at the bottom right corner.
+      // See:
+      // https://github.com/microsoft/terminal/issues/1203
+      // https://github.com/microsoft/terminal/issues/3093
+      &&
+      node->requirement().focused.cursor_shape != Screen::Cursor::Shape::Hidden
+#endif
+  ) {
+    screen.SetCursor(Screen::Cursor{
+        node->requirement().focused.node->box_.x_max,
+        node->requirement().focused.node->box_.y_max,
+        node->requirement().focused.cursor_shape,
+    });
+  } else {
+    screen.SetCursor(Screen::Cursor{
+        screen.dimx() - 1,
+        screen.dimy() - 1,
+        Screen::Cursor::Shape::Hidden,
+    });
   }
 
   // Step 4: Draw the element.
