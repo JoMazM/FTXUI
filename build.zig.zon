@@ -1,1 +1,1 @@
-.{ .name = "ftxui", .version = "5.0.0", .paths=.{""} }
+.{ .name = .ftxui, .version = "5.0.0", .fingerprint = 0x8c92f9c238b7343, .paths = .{""} }
