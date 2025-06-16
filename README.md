@@ -43,7 +43,8 @@ A simple cross-platform C++ library for terminal based user interfaces!
  * Support for [UTF8](https://en.wikipedia.org/wiki/UTF-8) and [fullwidth chars](https://en.wikipedia.org/wiki/Halfwidth_and_fullwidth_forms) (→ 测试)
  * Support for animations. [Demo 1](https://arthursonzogni.github.io/FTXUI/examples/?file=component/menu_underline_animated_gallery), [Demo 2](https://arthursonzogni.github.io/FTXUI/examples/?file=component/button_style)
  * Support for drawing. [Demo](https://arthursonzogni.github.io/FTXUI/examples/?file=component/canvas_animated)
- * No dependencies
+ * No dependencies.
+ * [C++20 Module support](https://arthursonzogni.github.io/FTXUI/cpp20-modules.html)
  * **Cross platform**: Linux/MacOS (main target), WebAssembly, Windows (Thanks to contributors!).
  * Learn by [examples](#documentation), and [tutorials](#documentation)
  * Multiple packages:
@@ -53,7 +54,9 @@ A simple cross-platform C++ library for terminal based user interfaces!
      - [Conan](https://conan.io/center/recipes/ftxui) [Debian package](https://tracker.debian.org/pkg/ftxui)
      - [Ubuntu package](https://launchpad.net/ubuntu/+source/ftxui)
      - [Arch Linux](https://aur.archlinux.org/packages/ftxui/)
-     - [OpenSUSE](https://build.opensuse.org/package/show/devel:libraries:c_c++/ftxui)
+    - [OpenSUSE](https://build.opensuse.org/package/show/devel:libraries:c_c++/ftxui)
+    - [XMake](https://xmake.io) repository [package](https://github.com/xmake-io/xmake-repo/blob/dev/packages/f/ftxui/xmake.lua)
+    - [Nix](https://github.com/ArthurSonzogni/FTXUI/blob/main/flake.nix)
  * Good practices: documentation, tests, fuzzers, performance tests, automated CI, automated packaging, etc...
 
 ## Documentation
@@ -99,7 +102,7 @@ Element can be arranged together:
   - inside a grid with `gridbox`
   - wrap along one direction using the `flexbox`.
   
-Element can become flexible using the the `flex` decorator.
+Element can become flexible using the `flex` decorator.
   
 [Example](https://arthursonzogni.github.io/FTXUI/examples_2dom_2vbox_hbox_8cpp-example.html) using `hbox`, `vbox` and `filler`.
 
@@ -361,6 +364,7 @@ Feel free to add your projects here:
 - [terminal-rain](https://github.com/Oakamoore/terminal-rain)
 - [keywords](https://github.com/Oakamoore/keywords) ([Play web version :heart:](https://oakamoore.itch.io/keywords))
 - [FTB - tertminal file browser](https://github.com/Cyxuan0311/FTB)
+- [openJuice](https://github.com/mikomikotaishi/openJuice)
 - [SHOOT!](https://github.com/ShingZhanho/ENGG1340-Project-25Spring)
 
 ### [cpp-best-practices/game_jam](https://github.com/cpp-best-practices/game_jam)
@@ -431,6 +435,7 @@ If you don't, FTXUI may be used from the following packages:
 - [Ubuntu package](https://launchpad.net/ubuntu/+source/ftxui),
 - [Arch Linux](https://aur.archlinux.org/packages/ftxui/),
 - [OpenSUSE](https://build.opensuse.org/package/show/devel:libraries:c_c++/ftxui),
+[Nix](https://github.com/ArthurSonzogni/FTXUI/blob/main/flake.nix),
 [![Packaging status](https://repology.org/badge/vertical-allrepos/libftxui.svg)](https://repology.org/project/libftxui/versions)
 
 
@@ -438,6 +443,8 @@ If you choose to build and link FTXUI yourself, `ftxui-component` must be first 
 ```bash
 g++ . . . -lftxui-component -lftxui-dom -lftxui-screen . . .
 ```
+
+To build FTXUI with modules, check [documentation](https://arthursonzogni.github.io/FTXUI/cpp20-modules.html)
 
 ## Contributors
 

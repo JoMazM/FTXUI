@@ -16,8 +16,7 @@ Node::Node() = default;
 Node::Node(Elements children) : children_(std::move(children)) {}
 Node::~Node() = default;
 
-/// @brief Compute how much space an elements needs.
-/// @ingroup dom
+/// @brief Compute how much space an element needs.
 void Node::ComputeRequirement() {
   if (children_.empty()) {
     return;
@@ -39,13 +38,11 @@ void Node::ComputeRequirement() {
 }
 
 /// @brief Assign a position and a dimension to an element for drawing.
-/// @ingroup dom
 void Node::SetBox(Box box) {
   box_ = box;
 }
 
 /// @brief Compute the selection of an element.
-/// @ingroup dom
 void Node::Select(Selection& selection) {
   // If this Node box_ doesn't intersect with the selection, then no selection.
   if (Box::Intersection(selection.GetBox(), box_).IsEmpty()) {
@@ -59,7 +56,6 @@ void Node::Select(Selection& selection) {
 }
 
 /// @brief Display an element on a ftxui::Screen.
-/// @ingroup dom
 void Node::Render(Screen& screen) {
   for (auto& child : children_) {
     child->Render(screen);

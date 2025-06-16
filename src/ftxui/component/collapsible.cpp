@@ -12,11 +12,11 @@
 
 namespace ftxui {
 
-/// @brief A collapsible component. It display a checkbox with an arrow. Once
-/// activated, the children is displayed.
+/// @brief A collapsible component. It displays a checkbox with an arrow. Once
+/// activated, the child is displayed.
 /// @param label The label of the checkbox.
-/// @param child The children to display.
-/// @param show Hold the state about whether the children is displayed or not.
+/// @param child The child to display.
+/// @param show Hold the state about whether the child is displayed or not.
 ///
 /// ### Example
 /// ```cpp
@@ -28,7 +28,7 @@ namespace ftxui {
 ///
 /// ▼ Show details
 /// <details component>
-///  ```
+/// ```
 // NOLINTNEXTLINE
 Component Collapsible(ConstStringRef label, Component child, Ref<bool> show) {
   class Impl : public ComponentBase {
