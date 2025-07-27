@@ -2,14 +2,24 @@ const std = @import("std");
 
 const Path = std.Build.LazyPath;
 
+
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const screen = b.addStaticLibrary(.{
+    const linkage = b.option(std.builtin.LinkMode, "linkage", "Link mode for FTXUI libraries") orelse .static;
+    
+    const root_module_opts : std.Build.Module.CreateOptions =  .{
+            .root_source_file = null,
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+            .link_libcpp = true,
+            };
+    const screen = b.addLibrary(.{
+        .linkage = linkage,
         .name = "screen",
-        .target = target,
-        .optimize = optimize,
+        .root_module = b.createModule(root_module_opts),
     });
     screen.addIncludePath(b.path("include"));
     screen.addIncludePath(b.path("src"));
@@ -44,13 +54,12 @@ pub fn build(b: *std.Build) void {
         },
     });
 
-    screen.linkLibCpp();
     b.installArtifact(screen);
 
-    const dom = b.addStaticLibrary(.{
+    const dom = b.addLibrary(.{
+        .linkage = linkage,
         .name = "dom",
-        .target = target,
-        .optimize = optimize,
+        .root_module = b.createModule(root_module_opts),
     });
     dom.addIncludePath(b.path("include"));
     dom.addIncludePath(b.path("src"));
@@ -114,14 +123,13 @@ pub fn build(b: *std.Build) void {
             "gitignore",
         },
     });
-    dom.linkLibCpp();
     dom.linkLibrary(screen);
     b.installArtifact(dom);
 
-    const component = b.addStaticLibrary(.{
+    const component = b.addLibrary(.{
+        .linkage = linkage,
         .name = "component",
-        .target = target,
-        .optimize = optimize,
+        .root_module = b.createModule(root_module_opts),
     });
     component.addIncludePath(b.path("include"));
     component.addIncludePath(b.path("src"));
@@ -143,7 +151,6 @@ pub fn build(b: *std.Build) void {
         "src/ftxui/component/menu.cpp",
         "src/ftxui/component/modal.cpp",
         "src/ftxui/component/radiobox.cpp",
-        "src/ftxui/component/radiobox.cpp",
         "src/ftxui/component/renderer.cpp",
         "src/ftxui/component/resizable_split.cpp",
         "src/ftxui/component/screen_interactive.cpp",
@@ -161,7 +168,6 @@ pub fn build(b: *std.Build) void {
             "gitignore",
         },
     });
-    component.linkLibCpp();
     component.linkLibrary(dom);
     b.installArtifact(component);
 }
