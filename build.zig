@@ -2,25 +2,32 @@ const std = @import("std");
 
 const Path = std.Build.LazyPath;
 
-
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const linkage = b.option(std.builtin.LinkMode, "linkage", "Link mode for FTXUI libraries") orelse .static;
-    
-    const root_module_opts : std.Build.Module.CreateOptions =  .{
-            .root_source_file = null,
-            .target = target,
-            .optimize = optimize,
-            .link_libc = true,
-            .link_libcpp = true,
-            };
+    //1. External interface to build using 'zig build -Doption=value'
+    const linkage = b.option(std.builtin.LinkMode, "linkage", "Build shared library or static library") orelse .static;
+
+    // 2. Option to pass when library is used as dependency
+    // https://ziglang.org/documentation/master/std/#std.Build.addOptions
+    const options = b.addOptions();
+    options.addOption(std.builtin.LinkMode, "linkage", linkage);
+
+    const root_module_opts: std.Build.Module.CreateOptions = .{
+        .root_source_file = null,
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+        .link_libcpp = true,
+    };
+
     const screen = b.addLibrary(.{
         .linkage = linkage,
         .name = "screen",
         .root_module = b.createModule(root_module_opts),
     });
+
     screen.addIncludePath(b.path("include"));
     screen.addIncludePath(b.path("src"));
     screen.addCSourceFiles(.{
