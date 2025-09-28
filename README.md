@@ -1,3 +1,4 @@
+
 <p align="center">
   <img src="https://github.com/ArthurSonzogni/FTXUI/assets/4759106/6925b6da-0a7e-49d9-883c-c890e1f36007" alt="Demo image"></img>
   <br/>
@@ -366,6 +367,8 @@ Feel free to add your projects here:
 - [FTB - tertminal file browser](https://github.com/Cyxuan0311/FTB)
 - [openJuice](https://github.com/mikomikotaishi/openJuice)
 - [SHOOT!](https://github.com/ShingZhanho/ENGG1340-Project-25Spring)
+- [VerifySN (Fast Hash Tool)](https://github.com/d06i/verifySN)
+- [tic-tac-toe](https://github.com/birland/tic-tac-toe)
 
 ### [cpp-best-practices/game_jam](https://github.com/cpp-best-practices/game_jam)
 

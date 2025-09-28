@@ -15,16 +15,14 @@ add_subdirectory(component)
 add_subdirectory(dom)
 
 if (EMSCRIPTEN)
-  string(APPEND CMAKE_EXE_LINKER_FLAGS " -s ALLOW_MEMORY_GROWTH=1")
-  target_link_options(component PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1")
-
   get_property(EXAMPLES GLOBAL PROPERTY FTXUI::EXAMPLES)
   foreach(file
+      "index.css"
       "index.html"
       "index.mjs"
-      "index.css"
+      "run_webassembly.py"
       "sw.js"
-      "run_webassembly.py")
+  )
     configure_file(${file} ${file})
   endforeach(file)
 endif()

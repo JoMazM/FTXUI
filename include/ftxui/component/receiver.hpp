@@ -7,13 +7,16 @@
 #include <algorithm>           // for copy, max
 #include <atomic>              // for atomic, __atomic_base
 #include <condition_variable>  // for condition_variable
-#include <memory>              // for unique_ptr, make_unique
-#include <mutex>               // for mutex, unique_lock
-#include <queue>               // for queue
-#include <utility>             // for move
+#include <ftxui/util/warn_windows_macro.hpp>
+#include <memory>   // for unique_ptr, make_unique
+#include <mutex>    // for mutex, unique_lock
+#include <queue>    // for queue
+#include <utility>  // for move
 
 namespace ftxui {
 
+// Deprecated
+//
 // Usage:
 //
 // Initialization:
@@ -39,17 +42,24 @@ namespace ftxui {
 // Receiver::Receive() returns true when there are no more senders.
 
 // clang-format off
+// Deprecated:
 template<class T> class SenderImpl;
+// Deprecated:
 template<class T> class ReceiverImpl;
+// Deprecated:
 
+// Deprecated:
 template<class T> using Sender = std::unique_ptr<SenderImpl<T>>;
+// Deprecated:
 template<class T> using Receiver = std::unique_ptr<ReceiverImpl<T>>;
+// Deprecated:
 template<class T> Receiver<T> MakeReceiver();
 // clang-format on
 
 // ---- Implementation part ----
 
 template <class T>
+// Deprecated:
 class SenderImpl {
  public:
   SenderImpl(const SenderImpl&) = delete;
